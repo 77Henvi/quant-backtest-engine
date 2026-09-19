@@ -1,0 +1,9 @@
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[project]
+name = "project-quant-backend"
+version = "0.1.0"
+description = "Domain layer for the Project Quant backtest engine (week 1, no API/cloud)"
+requires-python = ">=3.10"

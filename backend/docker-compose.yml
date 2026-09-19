@@ -1,0 +1,34 @@
+# Runs the FULL stack locally with one command: docker compose up --build
+# No GCP account, no billing, no credit card needed - everything runs
+# on your own machine exactly the way it will on Cloud Run + Cloud SQL later.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: quant
+      POSTGRES_PASSWORD: quant
+      POSTGRES_DB: quant
+    ports:
+      - "5432:5432"
+    volumes:
+      - quant_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U quant"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    ports:
+      - "8000:8080"
+    environment:
+      DATABASE_URL: postgresql://quant:quant@postgres:5432/quant
+      PORT: "8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  quant_pg_data:
