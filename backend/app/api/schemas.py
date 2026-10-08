@@ -1,10 +1,5 @@
 """
 Pydantic schemas: the HTTP contract.
-
-A third set of "Bar"/"Trade"-shaped classes, on purpose - same reasoning
-as ORM vs domain. This is what changes when the API's public shape
-changes (e.g. renaming a JSON field for frontend convenience) without
-touching the engine or the database schema.
 """
 
 from datetime import date
@@ -24,10 +19,13 @@ class BarIn(BaseModel):
 
 class BacktestRequest(BaseModel):
     bars: List[BarIn] = Field(..., min_length=2, description="Price history, oldest first")
-    strategy: str = Field(..., description="e.g. 'sma_crossover', 'fibonacci_retracement'")
+    strategy: str = Field(..., description="e.g. 'sma_crossover', 'fibonacci_retracement', 'macd_crossover'")
     params: Dict[str, Any] = Field(default_factory=dict, description="Strategy constructor kwargs")
     initial_capital: float = Field(default=10_000.0, gt=0)
     position_fraction: float = Field(default=1.0, gt=0, le=1.0)
+    commission_rate: float = Field(default=0.0, ge=0.0, le=0.1, description="Broker commission rate e.g. 0.001 = 0.1%")
+    slippage_rate: float = Field(default=0.0, ge=0.0, le=0.05, description="Market execution slippage rate e.g. 0.0005 = 5 bps")
+    risk_free_rate: float = Field(default=0.0, ge=0.0, description="Annual risk-free rate e.g. 0.02 = 2%")
     num_trials: Optional[int] = Field(
         default=None,
         ge=2,

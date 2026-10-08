@@ -65,7 +65,10 @@ def create_backtest(payload: BacktestRequest, db: Session = Depends(get_db)):
             strategy_params=payload.params,
             initial_capital=payload.initial_capital,
             position_fraction=payload.position_fraction,
+            commission_rate=payload.commission_rate,
+            slippage_rate=payload.slippage_rate,
             num_trials=payload.num_trials,
+            risk_free_rate=payload.risk_free_rate,
         )
     except ValueError as exc:
         # Bad strategy name / bad params / bad bar data -> the caller's

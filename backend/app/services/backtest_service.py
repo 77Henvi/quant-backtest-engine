@@ -12,7 +12,10 @@ from typing import Any, Dict, List, Optional, Tuple, Type
 from app.domain import (
     BacktestEngine,
     BacktestResult,
+    BollingerMeanReversionStrategy,
+    DualMomentumStrategy,
     FibonacciRetracementStrategy,
+    MACDCrossoverStrategy,
     RSIMeanReversionStrategy,
     SmaCrossoverStrategy,
     Strategy,
@@ -20,12 +23,14 @@ from app.domain import (
 )
 from app.domain.models import Bar
 
-# Adding a new strategy to the API is exactly one line here - nothing
-# else in app/api or app/services needs to change.
+# Strategy Registry
 STRATEGY_REGISTRY: Dict[str, Type[Strategy]] = {
     "sma_crossover": SmaCrossoverStrategy,
     "fibonacci_retracement": FibonacciRetracementStrategy,
     "rsi_mean_reversion": RSIMeanReversionStrategy,
+    "macd_crossover": MACDCrossoverStrategy,
+    "bollinger_mean_reversion": BollingerMeanReversionStrategy,
+    "dual_momentum": DualMomentumStrategy,
 }
 
 
@@ -49,9 +54,12 @@ def run_backtest(
     bars: List[Bar],
     strategy_name: str,
     strategy_params: Dict[str, Any],
-    initial_capital: float,
-    position_fraction: float,
+    initial_capital: float = 10_000.0,
+    position_fraction: float = 1.0,
+    commission_rate: float = 0.0,
+    slippage_rate: float = 0.0,
     num_trials: Optional[int] = None,
+    risk_free_rate: float = 0.0,
 ) -> Tuple[BacktestResult, Dict[str, float]]:
     """Build the strategy, run it through the engine, compute metrics.
 
@@ -64,7 +72,12 @@ def run_backtest(
     combinations were searched before this one was picked.
     """
     strategy = build_strategy(strategy_name, strategy_params)
-    engine = BacktestEngine(initial_capital=initial_capital, position_fraction=position_fraction)
+    engine = BacktestEngine(
+        initial_capital=initial_capital,
+        position_fraction=position_fraction,
+        commission_rate=commission_rate,
+        slippage_rate=slippage_rate,
+    )
     result = engine.run(bars, strategy)
-    metrics = compute_metrics(result, num_trials=num_trials)
+    metrics = compute_metrics(result, num_trials=num_trials, risk_free_rate=risk_free_rate)
     return result, metrics

@@ -57,6 +57,9 @@ class Trade:
     quantity: float
     exit_date: Optional[date] = None
     exit_price: Optional[float] = None
+    commission: float = 0.0
+    slippage: float = 0.0
+    duration_bars: int = 0
 
     @property
     def is_open(self) -> bool:
@@ -64,17 +67,28 @@ class Trade:
 
     @property
     def pnl(self) -> float:
-        """Absolute profit/loss in currency units. 0.0 while still open."""
+        """Net profit/loss after commission and slippage. 0.0 while still open."""
+        if self.is_open:
+            return 0.0
+        gross = (self.exit_price - self.entry_price) * self.quantity
+        return gross - self.commission
+
+    @property
+    def gross_pnl(self) -> float:
+        """Gross profit/loss before commissions."""
         if self.is_open:
             return 0.0
         return (self.exit_price - self.entry_price) * self.quantity
 
     @property
     def return_pct(self) -> float:
-        """Percentage return of the trade. 0.0 while still open."""
+        """Percentage return of the trade based on capital deployed. 0.0 while still open."""
         if self.is_open or self.entry_price == 0:
             return 0.0
-        return (self.exit_price - self.entry_price) / self.entry_price
+        invested = self.entry_price * self.quantity
+        if invested == 0:
+            return 0.0
+        return self.pnl / invested
 
 
 @dataclass(frozen=True)
@@ -93,3 +107,5 @@ class BacktestResult:
     equity_curve: List[EquityPoint]
     initial_capital: float
     final_equity: float
+    benchmark_equity_curve: List[EquityPoint] = field(default_factory=list)
+

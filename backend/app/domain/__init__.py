@@ -1,12 +1,16 @@
 from .models import Bar, BacktestResult, EquityPoint, Signal, Trade
 from .strategy import (
+    BollingerMeanReversionStrategy,
+    DualMomentumStrategy,
     FibonacciRetracementStrategy,
+    MACDCrossoverStrategy,
     RSIMeanReversionStrategy,
     SmaCrossoverStrategy,
     Strategy,
 )
 from .engine import BacktestEngine
-from .metrics import compute_metrics, deflated_sharpe_ratio
+from .metrics import compute_metrics, deflated_sharpe_ratio, probabilistic_sharpe_ratio
+from .robustness import MonteCarloSummary, run_monte_carlo_simulation
 from .indicators import (
     BollingerBand,
     MACDPoint,
@@ -33,9 +37,15 @@ __all__ = [
     "SmaCrossoverStrategy",
     "FibonacciRetracementStrategy",
     "RSIMeanReversionStrategy",
+    "MACDCrossoverStrategy",
+    "BollingerMeanReversionStrategy",
+    "DualMomentumStrategy",
     "BacktestEngine",
     "compute_metrics",
     "deflated_sharpe_ratio",
+    "probabilistic_sharpe_ratio",
+    "MonteCarloSummary",
+    "run_monte_carlo_simulation",
     "SwingRange",
     "PivotPoints",
     "MACDPoint",

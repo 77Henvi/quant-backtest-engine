@@ -22,13 +22,26 @@ from .strategy import Strategy
 
 
 class BacktestEngine:
-    def __init__(self, initial_capital: float = 10_000.0, position_fraction: float = 1.0):
+    def __init__(
+        self,
+        initial_capital: float = 10_000.0,
+        position_fraction: float = 1.0,
+        commission_rate: float = 0.0,
+        slippage_rate: float = 0.0,
+    ):
         if initial_capital <= 0:
             raise ValueError("initial_capital must be positive")
         if not (0.0 < position_fraction <= 1.0):
             raise ValueError("position_fraction must be in (0, 1]")
+        if commission_rate < 0.0:
+            raise ValueError("commission_rate must be non-negative")
+        if slippage_rate < 0.0:
+            raise ValueError("slippage_rate must be non-negative")
+
         self.initial_capital = initial_capital
         self.position_fraction = position_fraction
+        self.commission_rate = commission_rate
+        self.slippage_rate = slippage_rate
 
     def run(self, bars: List[Bar], strategy: Strategy) -> BacktestResult:
         if not bars:
@@ -37,6 +50,7 @@ class BacktestEngine:
                 equity_curve=[],
                 initial_capital=self.initial_capital,
                 final_equity=self.initial_capital,
+                benchmark_equity_curve=[],
             )
 
         signals = strategy.generate_signals(bars)
@@ -50,18 +64,46 @@ class BacktestEngine:
         open_trade: Optional[Trade] = None
         trades: List[Trade] = []
         equity_curve: List[EquityPoint] = []
+        benchmark_equity_curve: List[EquityPoint] = []
+
+        # Benchmark: Buy & Hold 100% of initial capital at first bar close
+        first_close = bars[0].close
+        benchmark_shares = self.initial_capital / first_close if first_close > 0 else 0.0
 
         for bar, signal in zip(bars, signals):
+            benchmark_equity_curve.append(
+                EquityPoint(date=bar.date, equity=benchmark_shares * bar.close)
+            )
+
+            if open_trade is not None:
+                open_trade.duration_bars += 1
+
             if signal is Signal.BUY and open_trade is None:
                 allocation = cash * self.position_fraction
-                quantity = allocation / bar.close
-                open_trade = Trade(entry_date=bar.date, entry_price=bar.close, quantity=quantity)
-                cash -= quantity * bar.close
+                effective_entry_price = bar.close * (1.0 + self.slippage_rate)
+                # Commission on buy
+                entry_comm = allocation * self.commission_rate
+                net_capital = allocation - entry_comm
+                if net_capital > 0 and effective_entry_price > 0:
+                    quantity = net_capital / effective_entry_price
+                    open_trade = Trade(
+                        entry_date=bar.date,
+                        entry_price=effective_entry_price,
+                        quantity=quantity,
+                        commission=entry_comm,
+                        slippage=effective_entry_price - bar.close,
+                        duration_bars=1,
+                    )
+                    cash -= allocation
 
             elif signal is Signal.SELL and open_trade is not None:
+                effective_exit_price = bar.close * (1.0 - self.slippage_rate)
+                proceeds = open_trade.quantity * effective_exit_price
+                exit_comm = proceeds * self.commission_rate
                 open_trade.exit_date = bar.date
-                open_trade.exit_price = bar.close
-                cash += open_trade.quantity * bar.close
+                open_trade.exit_price = effective_exit_price
+                open_trade.commission += exit_comm
+                cash += proceeds - exit_comm
                 trades.append(open_trade)
                 open_trade = None
 
@@ -72,9 +114,13 @@ class BacktestEngine:
         # results always reflect a fully realized final equity value.
         if open_trade is not None:
             last_bar = bars[-1]
+            effective_exit_price = last_bar.close * (1.0 - self.slippage_rate)
+            proceeds = open_trade.quantity * effective_exit_price
+            exit_comm = proceeds * self.commission_rate
             open_trade.exit_date = last_bar.date
-            open_trade.exit_price = last_bar.close
-            cash += open_trade.quantity * last_bar.close
+            open_trade.exit_price = effective_exit_price
+            open_trade.commission += exit_comm
+            cash += proceeds - exit_comm
             trades.append(open_trade)
             equity_curve[-1] = EquityPoint(date=last_bar.date, equity=cash)
 
@@ -83,4 +129,6 @@ class BacktestEngine:
             equity_curve=equity_curve,
             initial_capital=self.initial_capital,
             final_equity=equity_curve[-1].equity,
+            benchmark_equity_curve=benchmark_equity_curve,
         )
+
