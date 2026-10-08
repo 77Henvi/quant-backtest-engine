@@ -1,6 +1,6 @@
 """
 Project Quant — Institutional Terminal & Research Dashboard.
-Bilingual (Thai / English), Beginner-Friendly UI/UX, Glassmorphism Theme & Performance Optimized.
+Zero-Emoji Clean Institutional Design, Bilingual (TH/EN), SVG Icons & High-Performance.
 """
 
 from datetime import date, datetime, timedelta
@@ -38,74 +38,76 @@ from app.domain import (
 )
 
 # -----------------------------------------------------------------------------
-# PAGE CONFIGURATION
+# PAGE CONFIGURATION (CLEAN SVG FAVICON)
 # -----------------------------------------------------------------------------
+FAVICON_URL = "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4c8.svg"
+
 st.set_page_config(
-    page_title="Project Quant | Research Terminal",
-    page_icon="https://cdn-icons-png.flaticon.com/512/2620/2620573.png",
+    page_title="Project Quant | Institutional Terminal",
+    page_icon="https://img.icons8.com/fluency/96/candlestick-chart.png",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
 # -----------------------------------------------------------------------------
-# BILINGUAL DICTIONARY (THAI / ENGLISH)
+# BILINGUAL DICTIONARY (CLEAN INSTITUTIONAL TEXT - NO EMOJIS)
 # -----------------------------------------------------------------------------
 I18N: Dict[str, Dict[str, str]] = {
     "EN": {
-        "title": "PROJECT QUANT TERMINAL",
+        "title": "PROJECT QUANT",
         "subtitle": "Institutional Algorithmic Research & Overfitting Protection Engine",
         "badge_institutional": "INSTITUTIONAL GRADE",
         "badge_dsr": "DSR OVERFITTING GUARD",
         "lang_select": "Language / ภาษา",
-        "quick_presets": "⚡ Quick Presets (One-Click)",
+        "quick_presets": "Strategy Presets",
         "preset_custom": "Custom Configuration",
-        "preset_nvda": "🚀 NVDA Momentum (AI Leader)",
-        "preset_btc": "🪙 Bitcoin Volatility (MACD Trend)",
-        "preset_spy": "📈 S&P 500 Buy-The-Dip (Fibonacci)",
-        "preset_gold": "🛡️ Gold Safe Haven (Bollinger Bands)",
-        "preset_covid": "💥 2020 COVID Crash Stress Test",
+        "preset_nvda": "NVDA Momentum (Dual Momentum AI)",
+        "preset_btc": "Bitcoin Volatility (MACD Trend)",
+        "preset_spy": "S&P 500 Pullback (Fibonacci 61.8%)",
+        "preset_gold": "Gold Mean-Reversion (Bollinger Bands)",
+        "preset_covid": "2020 COVID Crash Stress Scenario",
         "data_source": "Data Source & Asset",
-        "source_live": "Live Global Market (Yahoo Finance)",
-        "source_stress": "Crisis & Stress Scenarios",
-        "source_upload": "Upload Custom CSV",
+        "source_live": "Live Market (Yahoo Finance)",
+        "source_stress": "Market Stress Scenarios",
+        "source_upload": "Upload Custom Dataset",
         "ticker_label": "Ticker Symbol",
         "ticker_help": "e.g. NVDA, AAPL, SPY, BTC-USD, GC=F (Gold), PTT.BK",
         "start_date": "Start Date",
         "end_date": "End Date",
-        "strategy_label": "Trading Strategy",
-        "microstructure": "Execution Friction & Risk Settings",
+        "strategy_label": "Algorithm Model",
+        "microstructure": "Execution Friction & Risk",
         "init_capital": "Initial Capital ($)",
         "pos_sizing": "Position Allocation Fraction",
         "commission": "Broker Commission Fee (%)",
         "slippage": "Execution Slippage (bps)",
-        "num_trials": "DSR Trials (Parameter Search Count)",
+        "num_trials": "DSR Trials (Search Count)",
         "num_trials_help": "How many strategy variations you tried. DSR applies statistical haircut to detect false positives!",
-        "risk_free": "Annual Risk-Free Rate (%)",
-        "tab_overview": "📊 Performance & Signals",
-        "tab_equity": "🌊 Equity Curve & Drawdown",
-        "tab_risk": "🛡️ Institutional Risk Matrix",
-        "tab_monte_carlo": "🎲 Monte Carlo Robustness",
-        "tab_trades": "📋 Trade Audit Log",
-        "tab_tearsheet": "📄 Factsheet Export",
-        "summary_verdict": "Executive Strategy Verdict",
-        "verdict_pass": "INSTITUTIONAL GRADE (Statistically Robust Alpha)",
-        "verdict_pass_desc": "High Deflated Sharpe (>80%) and positive risk-adjusted returns indicate genuine statistical edge.",
+        "risk_free": "Risk-Free Rate (% p.a.)",
+        "tab_overview": "Performance & Orders",
+        "tab_equity": "Equity Curve & Drawdown",
+        "tab_risk": "Institutional Risk Matrix",
+        "tab_monte_carlo": "Monte Carlo Robustness",
+        "tab_trades": "Trade Audit Log",
+        "tab_tearsheet": "Strategy Factsheet",
+        "summary_verdict": "Strategy Executive Verdict",
+        "verdict_pass": "INSTITUTIONAL GRADE (Statistically Robust)",
+        "verdict_pass_desc": "High Deflated Sharpe (>80%) and positive risk-adjusted returns indicate genuine statistical alpha.",
         "verdict_moderate": "MODERATE (Viable with Higher Volatility)",
         "verdict_moderate_desc": "Profitable but exhibits noticeable drawdowns or moderate DSR confidence.",
         "verdict_warning": "HIGH RISK / OVERFITTING WARNING",
         "verdict_warning_desc": "Low DSR (<50%) suggests results might be due to multiple-testing luck or excessive drawdowns.",
         "total_return": "Total Net Return",
-        "total_return_hint": "Net profit/loss generated relative to starting capital after all friction.",
+        "total_return_hint": "Net PnL relative to starting capital after all friction.",
         "sharpe_ratio": "Sharpe Ratio (Ann.)",
-        "sharpe_ratio_hint": "Excess return per unit of volatility. > 1.0 is good, > 2.0 is elite.",
+        "sharpe_ratio_hint": "Excess return per unit of volatility. > 1.0 is standard, > 2.0 is elite.",
         "dsr": "Deflated Sharpe (DSR)",
-        "dsr_hint": "Bailey & Lopez de Prado (2014): Probability (0-100%) that strategy is NOT a lucky fluke.",
+        "dsr_hint": "Bailey & Lopez de Prado (2014): Statistical confidence that alpha is NOT a lucky fluke.",
         "max_dd": "Max Drawdown",
-        "max_dd_hint": "Worst peak-to-trough drop. Lower is safer.",
+        "max_dd_hint": "Peak-to-trough drop. Lower indicates lower tail risk.",
         "win_rate": "Win Rate",
-        "win_rate_hint": "Percentage of closed trades with positive net PnL.",
+        "win_rate_hint": "Percentage of closed trades with positive net return.",
         "profit_factor": "Profit Factor",
-        "profit_factor_hint": "Gross Profits divided by Gross Losses. > 1.5 is strong.",
+        "profit_factor_hint": "Gross Profits divided by Gross Losses. > 1.5 is robust.",
         "cagr": "CAGR (Annual Growth)",
         "sortino": "Sortino Ratio",
         "calmar": "Calmar Ratio",
@@ -114,26 +116,26 @@ I18N: Dict[str, Dict[str, str]] = {
         "cvar_95": "Expected Shortfall (CVaR 95%)",
         "alpha": "Alpha vs Benchmark",
         "beta": "Beta to Benchmark",
-        "trades_count": "Total Trades",
+        "trades_count": "Trades",
         "benchmark_return": "Benchmark Return",
-        "guide_title": "🎓 Beginner's Quick Quant Guide",
-        "guide_body": "• **What is DSR?** Standard Sharpe ratios fool investors when you test 100 settings and pick the best one. DSR penalizes this selection bias.<br>• **What is Slippage?** The difference between the signal price and actual fill price in real fast-moving markets.",
+        "guide_title": "Quantitative Methodology Notes",
+        "guide_body": "• <strong>Deflated Sharpe Ratio (DSR)</strong>: Standard Sharpe ratios deceive investors when testing multiple strategy parameters. DSR adjusts for selection bias and non-normal asset return skewness.<br>• <strong>Realistic Slippage Model</strong>: Execution pricing accounts for order book impact and bid-ask spread friction in basis points.",
     },
     "TH": {
-        "title": "PROJECT QUANT TERMINAL",
+        "title": "PROJECT QUANT",
         "subtitle": "ระบบวิจัยการลงทุนเชิงปริมาณ & ตรวจจับการ Overfitting ระดับสถาบัน",
         "badge_institutional": "สถาปัตยกรรมระดับสถาบัน",
         "badge_dsr": "ระบบป้องกัน OVERFITTING (DSR)",
         "lang_select": "เลือกภาษา / Language",
-        "quick_presets": "⚡ พรีเซ็ตทดสอบด่วน (คลิกเดียวรันทันที)",
+        "quick_presets": "พรีเซ็ตทดสอบด่วน",
         "preset_custom": "กำหนดค่าเอง (Custom)",
-        "preset_nvda": "🚀 NVDA โมเมนตัมหุ้นผู้นำ AI (Dual Momentum)",
-        "preset_btc": "🪙 Bitcoin เทรนด์ตามความผันผวน (MACD Trend)",
-        "preset_spy": "📈 S&P 500 ย่อซื้อตามแนวรับ (Fibonacci)",
-        "preset_gold": "🛡️ ทองคำ Safe Haven ดักซื้อขอบล่าง (Bollinger)",
-        "preset_covid": "💥 จำลองวิกฤต COVID 2020 Crash",
+        "preset_nvda": "NVDA โมเมนตัมหุ้นผู้นำ AI (Dual Momentum)",
+        "preset_btc": "Bitcoin เทรนด์ตามความผันผวน (MACD Trend)",
+        "preset_spy": "S&P 500 ย่อซื้อตามแนวรับ (Fibonacci)",
+        "preset_gold": "ทองคำ Safe Haven ดักซื้อขอบล่าง (Bollinger)",
+        "preset_covid": "จำลองวิกฤต COVID 2020 Crash",
         "data_source": "แหล่งข้อมูลและสินทรัพย์",
-        "source_live": "ดึงข้อมูลตลาดจริงสดๆ (Yahoo Finance)",
+        "source_live": "ดึงข้อมูลตลาดจริง (Yahoo Finance)",
         "source_stress": "จำลองสถานการณ์วิกฤติตลาด (Stress Test)",
         "source_upload": "อัปโหลดไฟล์ CSV ของตัวเอง",
         "ticker_label": "ชื่อย่อหุ้น / สินทรัพย์ (Ticker)",
@@ -149,12 +151,12 @@ I18N: Dict[str, Dict[str, str]] = {
         "num_trials": "จำนวนครั้งที่เคยทดลองปรับพารามิเตอร์ (DSR Trials)",
         "num_trials_help": "ระบุว่าเคยลองจูนพารามิเตอร์มากี่ครั้ง ระบบ DSR จะนำไปหักลบความฟลุ๊คออกตามหลักสถิติ!",
         "risk_free": "อัตราผลตอบแทนไร้ความเสี่ยงต่อปี (%)",
-        "tab_overview": "📊 ผลการทดสอบ & สัญญาณเทรด",
-        "tab_equity": "🌊 กราฟพอร์ตโฟลิโอ & Drawdown",
-        "tab_risk": "🛡️ ตารางความเสี่ยงระดับสถาบัน",
-        "tab_monte_carlo": "🎲 การทดสอบ Monte Carlo 1,000 รอบ",
-        "tab_trades": "📋 บันทึกประวัติการเทรดทุกไม้",
-        "tab_tearsheet": "📄 สรุป Factsheet ทางการ",
+        "tab_overview": "ผลการทดสอบ & สัญญาณเทรด",
+        "tab_equity": "กราฟพอร์ตโฟลิโอ & Drawdown",
+        "tab_risk": "ตารางความเสี่ยงระดับสถาบัน",
+        "tab_monte_carlo": "การทดสอบ Monte Carlo 1,000 รอบ",
+        "tab_trades": "บันทึกประวัติการเทรดทุกไม้",
+        "tab_tearsheet": "สรุป Factsheet ทางการ",
         "summary_verdict": "บทวิเคราะห์สรุปผลสัมฤทธิ์ของกลยุทธ์ (Executive Verdict)",
         "verdict_pass": "ผ่านเกณฑ์ระดับสถาบัน (Institutional Grade Alpha)",
         "verdict_pass_desc": "ค่า Deflated Sharpe สูง (>80%) และผลตอบแทนปรับลดความเสี่ยงเป็นบวก พิสูจน์ว่ากำไรมาจากฝีมือทางสถิติอย่างแท้จริง",
@@ -182,15 +184,28 @@ I18N: Dict[str, Dict[str, str]] = {
         "cvar_95": "Expected Shortfall (CVaR 95%)",
         "alpha": "Alpha (ผลตอบแทนชนะ Benchmark)",
         "beta": "Beta (ความอ่อนไหวเทียบ Benchmark)",
-        "trades_count": "จำนวนรอบการเทรด",
+        "trades_count": "รอบการเทรด",
         "benchmark_return": "ผลตอบแทน Benchmark (ถือยาว)",
-        "guide_title": "🎓 คู่มือ Quant สำหรับผู้เริ่มต้น (อ่านง่ายใน 1 นาที)",
-        "guide_body": "• **ทำไมต้องมี DSR?**: เวลาเราปรับเลข Indicator ไปเรื่อยๆ จนเจอกำไรเยอะ ส่วนใหญ่คือ 'ความบังเอิญ' DSR จึงถูกคิดค้นมาเพื่อหักคะแนนความฟลุ๊คออก<br>• **Slippage คืออะไร?**: ความคลาดเคลื่อนของราคาเวลาส่งคำสั่งจริงในตลาด เช่น สัญญาณบอกซื้อที่ $100 แต่เคาะซื้อจริงได้ที่ $100.05",
+        "guide_title": "คู่มือ Quant สำหรับผู้เริ่มต้น (อ่านง่ายใน 1 นาที)",
+        "guide_body": "• <strong>ทำไมต้องมี DSR?</strong>: เวลาเราปรับเลข Indicator ไปเรื่อยๆ จนเจอกำไรเยอะ ส่วนใหญ่คือ 'ความบังเอิญ' DSR จึงถูกคิดค้นมาเพื่อหักคะแนนความฟลุ๊คออก<br>• <strong>Slippage คืออะไร?</strong>: ความคลาดเคลื่อนของราคาเวลาส่งคำสั่งจริงในตลาด เช่น สัญญาณบอกซื้อที่ $100 แต่เคาะซื้อจริงได้ที่ $100.05",
     },
 }
 
 # -----------------------------------------------------------------------------
-# MODERN GLASSMORPHISM STYLING & ANIMATIONS
+# SVG ICONS (CLEAN VECTOR GRAPHICS - NO RAW EMOJIS)
+# -----------------------------------------------------------------------------
+SVG_ICONS = {
+    "chart": '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>',
+    "shield": '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+    "shield_warn": '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>',
+    "shield_danger": '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>',
+    "activity": '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>',
+    "layers": '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>',
+    "cpu": '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>',
+}
+
+# -----------------------------------------------------------------------------
+# MODERN CSS & GLASSMORPHISM
 # -----------------------------------------------------------------------------
 st.markdown(
     """
@@ -204,64 +219,50 @@ st.markdown(
         font-family: 'JetBrains Mono', monospace !important;
     }
 
-    /* Main background */
     .stApp {
-        background: radial-gradient(circle at top right, #111827 0%, #030712 100%);
-        color: #f3f4f6;
+        background: radial-gradient(circle at top right, #0f172a 0%, #020617 100%);
+        color: #f8fafc;
     }
 
-    /* Glassmorphic Metric Cards with smooth hover animation */
+    /* Metric Card */
     .metric-card {
-        background: rgba(17, 24, 39, 0.7);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 14px;
-        padding: 18px 22px;
+        background: rgba(15, 23, 42, 0.75);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 12px;
+        padding: 16px 20px;
         margin-bottom: 12px;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+        transition: all 0.25s ease-out;
         position: relative;
-        overflow: hidden;
     }
     .metric-card:hover {
-        transform: translateY(-3px);
-        border-color: rgba(56, 189, 248, 0.4);
-        box-shadow: 0 12px 36px -4px rgba(56, 189, 248, 0.15);
+        transform: translateY(-2px);
+        border-color: rgba(56, 189, 248, 0.35);
+        box-shadow: 0 8px 28px -4px rgba(56, 189, 248, 0.12);
     }
-    .metric-card::before {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; height: 2px;
-        background: linear-gradient(90deg, #38bdf8, #818cf8, #34d399);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    .metric-card:hover::before {
-        opacity: 1;
-    }
-
     .metric-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
     .metric-title {
-        font-size: 0.78rem;
+        font-size: 0.76rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.06em;
         color: #94a3b8;
     }
     .metric-value {
-        font-size: 1.65rem;
+        font-size: 1.6rem;
         font-weight: 800;
         color: #38bdf8;
-        margin-top: 6px;
+        margin-top: 4px;
         letter-spacing: -0.02em;
     }
     .metric-hint {
-        font-size: 0.73rem;
+        font-size: 0.72rem;
         color: #64748b;
         margin-top: 4px;
     }
@@ -272,65 +273,60 @@ st.markdown(
         color: #f43f5e !important;
     }
 
-    /* Badges */
+    /* Clean Institutional Badges */
     .badge {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 4px 12px;
-        border-radius: 9999px;
-        font-size: 0.72rem;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.7rem;
         font-weight: 700;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
         background: rgba(56, 189, 248, 0.1);
         color: #38bdf8;
         border: 1px solid rgba(56, 189, 248, 0.25);
     }
     .badge-success {
-        background: rgba(16, 185, 129, 0.12);
+        background: rgba(16, 185, 129, 0.1);
         color: #10b981;
-        border-color: rgba(16, 185, 129, 0.3);
+        border-color: rgba(16, 185, 129, 0.25);
     }
     .badge-warning {
-        background: rgba(245, 158, 11, 0.12);
+        background: rgba(245, 158, 11, 0.1);
         color: #f59e0b;
-        border-color: rgba(245, 158, 11, 0.3);
+        border-color: rgba(245, 158, 11, 0.25);
     }
 
     /* Verdict Banner */
     .verdict-banner {
-        border-radius: 14px;
-        padding: 18px 24px;
-        margin-bottom: 24px;
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 20px;
         display: flex;
         align-items: center;
-        gap: 18px;
+        gap: 16px;
         border: 1px solid rgba(255, 255, 255, 0.1);
-        animation: fadeIn 0.5s ease-in-out;
-    }
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(6px); }
-        to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Tab styling */
+    /* Tabs */
     .stTabs [data-baseweb="tab-list"] {
         gap: 6px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding-bottom: 4px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        padding-bottom: 2px;
     }
     .stTabs [data-baseweb="tab"] {
-        background-color: rgba(17, 24, 39, 0.6);
+        background-color: rgba(15, 23, 42, 0.6);
         border: 1px solid rgba(255, 255, 255, 0.06);
-        border-radius: 10px 10px 0 0;
-        padding: 10px 22px;
+        border-radius: 8px 8px 0 0;
+        padding: 9px 20px;
         color: #94a3b8;
         font-weight: 600;
-        font-size: 0.88rem;
-        transition: all 0.2s ease;
+        font-size: 0.86rem;
     }
     .stTabs [aria-selected="true"] {
-        background: linear-gradient(180deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.9) 100%) !important;
+        background: rgba(30, 41, 59, 0.9) !important;
         color: #38bdf8 !important;
         border-color: rgba(56, 189, 248, 0.4) !important;
         border-bottom: 2px solid #38bdf8 !important;
@@ -346,7 +342,6 @@ st.markdown(
 # -----------------------------------------------------------------------------
 @st.cache_data(ttl=3600, show_spinner=False)
 def fetch_ticker_data(symbol: str, start_date: str, end_date: str) -> Optional[pd.DataFrame]:
-    """Fast vectorized fetch from Yahoo Finance with normalization."""
     try:
         df = yf.download(symbol, start=start_date, end=end_date, progress=False)
         if df.empty or len(df) < 5:
@@ -370,8 +365,6 @@ def fetch_ticker_data(symbol: str, start_date: str, end_date: str) -> Optional[p
             df[col] = pd.to_numeric(df[col], errors="coerce").astype(float)
         df["volume"] = pd.to_numeric(df.get("volume", 0.0), errors="coerce").fillna(0.0).astype(float)
         df.dropna(subset=["open", "high", "low", "close"], inplace=True)
-
-        # Integrity check: high >= max(open, close), low <= min(open, close)
         df["high"] = df[["open", "close", "high"]].max(axis=1)
         df["low"] = df[["open", "close", "low"]].min(axis=1)
         return df.sort_values("date").reset_index(drop=True)
@@ -381,7 +374,6 @@ def fetch_ticker_data(symbol: str, start_date: str, end_date: str) -> Optional[p
 
 @st.cache_data(show_spinner=False)
 def generate_synthetic_regime(regime_name: str, n_bars: int = 500) -> pd.DataFrame:
-    """Generate reproducible market stress paths."""
     np.random.seed(42)
     dates = [date(2020, 1, 1) + timedelta(days=i) for i in range(n_bars)]
     
@@ -425,22 +417,21 @@ def dataframe_to_bars(df: pd.DataFrame) -> List[Bar]:
 
 
 # -----------------------------------------------------------------------------
-# SIDEBAR: LANGUAGE & PRESETS
+# SIDEBAR CONTROLS
 # -----------------------------------------------------------------------------
-# Language Toggle
-lang = st.sidebar.radio("🌐 Language / ภาษา", ["🇹🇭 ภาษาไทย", "🇺🇸 English"], index=0, horizontal=True)
+lang = st.sidebar.radio("Language / ภาษา", ["ไทย (TH)", "English (EN)"], index=0, horizontal=True)
 lang_key = "TH" if "ไทย" in lang else "EN"
 t = I18N[lang_key]
 
-st.sidebar.markdown(f"## **{t['title']}**")
+st.sidebar.markdown(f"### **{t['title']}**")
 st.sidebar.markdown(
-    f"<span class='badge badge-success'>● {t['badge_institutional']}</span> <span class='badge'>🛡️ {t['badge_dsr']}</span>",
+    f"<span class='badge badge-success'>{t['badge_institutional']}</span> <span class='badge'>{t['badge_dsr']}</span>",
     unsafe_allow_html=True,
 )
 st.sidebar.markdown("---")
 
-# Quick Preset Buttons (Beginner-Friendly 1-Click Setups)
-st.sidebar.markdown(f"### {t['quick_presets']}")
+# Presets
+st.sidebar.markdown(f"**{t['quick_presets']}**")
 preset_choice = st.sidebar.selectbox(
     "Choose Preset Template",
     [
@@ -454,7 +445,6 @@ preset_choice = st.sidebar.selectbox(
     label_visibility="collapsed",
 )
 
-# Apply Preset Defaults
 default_ticker = "NVDA"
 default_source = t["source_live"]
 default_strategy = "Dual Momentum (RSI + EMA Filter)"
@@ -483,7 +473,7 @@ elif preset_choice == t["preset_covid"]:
     default_strategy = "Dual Momentum (RSI + EMA Filter)"
 
 st.sidebar.markdown("---")
-st.sidebar.markdown(f"### 📁 {t['data_source']}")
+st.sidebar.markdown(f"**{t['data_source']}**")
 
 data_mode = st.sidebar.radio(
     "Select Source",
@@ -523,7 +513,7 @@ else:
         asset_label = "None"
 
 st.sidebar.markdown("---")
-st.sidebar.markdown(f"### ⚙️ {t['strategy_label']}")
+st.sidebar.markdown(f"**{t['strategy_label']}**")
 strategy_options = [
     "Dual Momentum (RSI + EMA Filter)",
     "MACD Momentum Crossover",
@@ -539,13 +529,12 @@ selected_strat_name = st.sidebar.selectbox(
     label_visibility="collapsed",
 )
 
-# Strategy Parameters
 params: Dict[str, Any] = {}
 if selected_strat_name == "Dual Momentum (RSI + EMA Filter)":
-    params["ema_period"] = st.sidebar.slider("EMA Trend Filter", 10, 200, 50, help="กรองเทรนด์ใหญ่: เทรดเฉพาะเมื่อราคาอยู่เหนือเส้น EMA นี้")
+    params["ema_period"] = st.sidebar.slider("EMA Trend Filter", 10, 200, 50)
     params["rsi_period"] = st.sidebar.slider("RSI Period", 5, 30, 14)
-    params["rsi_entry"] = st.sidebar.slider("RSI Pullback Entry", 20.0, 50.0, 35.0, help="จังหวะย่อตัวเพื่อซื้อ")
-    params["rsi_exit"] = st.sidebar.slider("RSI Target Exit", 50.0, 90.0, 65.0, help="จังหวะขายทำกำไร")
+    params["rsi_entry"] = st.sidebar.slider("RSI Pullback Entry", 20.0, 50.0, 35.0)
+    params["rsi_exit"] = st.sidebar.slider("RSI Target Exit", 50.0, 90.0, 65.0)
     strat_obj = DualMomentumStrategy(**params)
 
 elif selected_strat_name == "MACD Momentum Crossover":
@@ -573,13 +562,13 @@ elif selected_strat_name == "RSI Mean Reversion (Wilder's RSI)":
     params["deep_oversold"] = st.sidebar.slider("Stop-loss Level", 5.0, 25.0, 20.0)
     strat_obj = RSIMeanReversionStrategy(**params)
 
-else:  # SMA Crossover
+else:
     params["fast_period"] = st.sidebar.slider("Fast SMA Period", 2, 50, 10)
     params["slow_period"] = st.sidebar.slider("Slow SMA Period", 10, 200, 50)
     strat_obj = SmaCrossoverStrategy(**params)
 
 st.sidebar.markdown("---")
-st.sidebar.markdown(f"### 🛡️ {t['microstructure']}")
+st.sidebar.markdown(f"**{t['microstructure']}**")
 init_capital = st.sidebar.number_input(t["init_capital"], value=100_000.0, step=10_000.0)
 pos_fraction = st.sidebar.slider(t["pos_sizing"], 0.1, 1.0, 1.0, 0.05)
 commission_pct = st.sidebar.slider(t["commission"], 0.0, 0.5, default_comm, 0.01)
@@ -591,10 +580,10 @@ risk_free_rate = st.sidebar.slider(t["risk_free"], 0.0, 10.0, 3.5, 0.5) / 100.0
 
 
 # -----------------------------------------------------------------------------
-# EXECUTION & RESULTS COMPUTATION
+# RUN BACKTEST
 # -----------------------------------------------------------------------------
 if df_raw is None or len(df_raw) < 10:
-    st.error("⚠️ Unable to load market data. Please verify ticker symbol or network connection.")
+    st.error("Unable to load market data. Please verify ticker symbol or network connection.")
     st.stop()
 
 bars = dataframe_to_bars(df_raw)
@@ -612,7 +601,7 @@ metrics: Dict[str, float] = compute_metrics(
 
 
 # -----------------------------------------------------------------------------
-# EXECUTIVE VERDICT BADGE (BEGINNER-FRIENDLY SUMMARY)
+# VERDICT BANNER (WITH CLEAN SVG ICONS)
 # -----------------------------------------------------------------------------
 dsr_val = metrics.get("deflated_sharpe_ratio", 0.0)
 ret_val = metrics["total_return_pct"]
@@ -620,25 +609,28 @@ max_dd_val = metrics["max_drawdown_pct"]
 sharpe_val = metrics["sharpe_ratio"]
 
 if dsr_val >= 0.75 and sharpe_val >= 1.0 and max_dd_val < 35.0:
-    verdict_style = "background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.4);"
-    verdict_title = f"🟢 {t['verdict_pass']}"
+    verdict_style = "background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.35);"
+    icon_html = SVG_ICONS["shield"]
+    verdict_title = t["verdict_pass"]
     verdict_desc = t["verdict_pass_desc"]
 elif ret_val > 0 and max_dd_val < 50.0:
-    verdict_style = "background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.4);"
-    verdict_title = f"🟡 {t['verdict_moderate']}"
+    verdict_style = "background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.35);"
+    icon_html = SVG_ICONS["shield_warn"]
+    verdict_title = t["verdict_moderate"]
     verdict_desc = t["verdict_moderate_desc"]
 else:
-    verdict_style = "background: rgba(244, 63, 94, 0.12); border-color: rgba(244, 63, 94, 0.4);"
-    verdict_title = f"🔴 {t['verdict_warning']}"
+    verdict_style = "background: rgba(244, 63, 94, 0.1); border-color: rgba(244, 63, 94, 0.35);"
+    icon_html = SVG_ICONS["shield_danger"]
+    verdict_title = t["verdict_warning"]
     verdict_desc = t["verdict_warning_desc"]
 
 st.markdown(
     f"""
     <div class="verdict-banner" style="{verdict_style}">
-        <div style="font-size:2rem;">🛡️</div>
+        <div>{icon_html}</div>
         <div>
-            <div style="font-size:1.1rem; font-weight:800; color:#f8fafc;">{verdict_title}</div>
-            <div style="font-size:0.85rem; color:#cbd5e1; margin-top:2px;">{verdict_desc}</div>
+            <div style="font-size:1.05rem; font-weight:800; color:#f8fafc;">{verdict_title}</div>
+            <div style="font-size:0.82rem; color:#cbd5e1; margin-top:2px;">{verdict_desc}</div>
         </div>
     </div>
     """,
@@ -647,7 +639,7 @@ st.markdown(
 
 
 # -----------------------------------------------------------------------------
-# TOP KPI METRIC CARDS
+# TOP METRIC CARDS
 # -----------------------------------------------------------------------------
 kpi1, kpi2, kpi3, kpi4, kpi5, kpi6 = st.columns(6)
 
@@ -680,7 +672,7 @@ render_kpi(kpi6, t["profit_factor"], f"{metrics['profit_factor']:.2f}", t["profi
 
 
 # -----------------------------------------------------------------------------
-# MAIN MULTI-TAB DISPLAY
+# MAIN TABS
 # -----------------------------------------------------------------------------
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
     t["tab_overview"],
@@ -691,13 +683,11 @@ tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
     t["tab_tearsheet"],
 ])
 
-# -----------------------------------------------------------------------------
-# TAB 1: PRICE ACTION & SIGNALS
-# -----------------------------------------------------------------------------
+# TAB 1: PRICE ACTION
 with tab1:
     fig_price = make_subplots(
         rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.03,
-        row_heights=[0.75, 0.25], subplot_titles=["Price Action & Executed Orders", "Volume"]
+        row_heights=[0.75, 0.25], subplot_titles=["Price Action & Order Execution", "Volume"]
     )
     dates_list = [b.date for b in bars]
     closes = [b.close for b in bars]
@@ -716,7 +706,6 @@ with tab1:
         row=1, col=1,
     )
 
-    # Strategy Overlays
     if "SMA" in selected_strat_name:
         fast_sma = simple_moving_average(closes, params["fast_period"])
         slow_sma = simple_moving_average(closes, params["slow_period"])
@@ -733,34 +722,28 @@ with tab1:
         ema_vals = exponential_moving_average(closes, params["ema_period"])
         fig_price.add_trace(go.Scatter(x=dates_list, y=ema_vals, name=f"EMA Trend ({params['ema_period']})", line=dict(color="#a78bfa", width=2)), row=1, col=1)
 
-    # Markers for BUY and SELL
-    entry_dates = [t.entry_date for t in result.trades]
-    entry_prices = [t.entry_price for t in result.trades]
-    exit_dates = [t.exit_date for t in result.trades if t.exit_date is not None]
-    exit_prices = [t.exit_price for t in result.trades if t.exit_price is not None]
+    entry_dates = [t_item.entry_date for t_item in result.trades]
+    entry_prices = [t_item.entry_price for t_item in result.trades]
+    exit_dates = [t_item.exit_date for t_item in result.trades if t_item.exit_date is not None]
+    exit_prices = [t_item.exit_price for t_item in result.trades if t_item.exit_price is not None]
 
     fig_price.add_trace(
         go.Scatter(
-            x=entry_dates,
-            y=entry_prices,
-            mode="markers",
-            marker=dict(symbol="triangle-up", size=13, color="#10b981", line=dict(width=1, color="#ffffff")),
+            x=entry_dates, y=entry_prices, mode="markers",
+            marker=dict(symbol="triangle-up", size=12, color="#10b981", line=dict(width=1, color="#ffffff")),
             name="BUY Order",
         ),
         row=1, col=1,
     )
     fig_price.add_trace(
         go.Scatter(
-            x=exit_dates,
-            y=exit_prices,
-            mode="markers",
-            marker=dict(symbol="triangle-down", size=13, color="#f43f5e", line=dict(width=1, color="#ffffff")),
+            x=exit_dates, y=exit_prices, mode="markers",
+            marker=dict(symbol="triangle-down", size=12, color="#f43f5e", line=dict(width=1, color="#ffffff")),
             name="SELL Order",
         ),
         row=1, col=1,
     )
 
-    # Volume
     fig_price.add_trace(
         go.Bar(x=dates_list, y=[b.volume for b in bars], name="Volume", marker_color="rgba(56, 189, 248, 0.25)"),
         row=2, col=1,
@@ -777,9 +760,7 @@ with tab1:
     st.plotly_chart(fig_price, use_container_width=True)
 
 
-# -----------------------------------------------------------------------------
-# TAB 2: EQUITY CURVE & UNDERWATER DRAWDOWN
-# -----------------------------------------------------------------------------
+# TAB 2: EQUITY CURVE
 with tab2:
     eq_dates = [p.date for p in result.equity_curve]
     eq_vals = [p.equity for p in result.equity_curve]
@@ -793,7 +774,7 @@ with tab2:
 
     fig_eq = make_subplots(
         rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.04,
-        row_heights=[0.72, 0.28], subplot_titles=["Portfolio Equity ($) vs Buy & Hold Benchmark", "Underwater Drawdown (%)"]
+        row_heights=[0.72, 0.28], subplot_titles=["Portfolio Value ($) vs Benchmark", "Underwater Drawdown (%)"]
     )
 
     fig_eq.add_trace(
@@ -823,14 +804,12 @@ with tab2:
     st.plotly_chart(fig_eq, use_container_width=True)
 
 
-# -----------------------------------------------------------------------------
 # TAB 3: INSTITUTIONAL RISK MATRIX
-# -----------------------------------------------------------------------------
 with tab3:
     c1, c2, c3 = st.columns(3)
 
     with c1:
-        st.markdown(f"#### 📈 **{t['total_return']} & Growth**")
+        st.markdown(f"#### **{t['total_return']} & Growth**")
         st.dataframe(
             pd.DataFrame([
                 {"Metric": t["init_capital"], "Value": f"${result.initial_capital:,.2f}"},
@@ -844,7 +823,7 @@ with tab3:
         )
 
     with c2:
-        st.markdown(f"#### 🛡️ **{t['sharpe_ratio']} & Risk-Adjusted**")
+        st.markdown(f"#### **{t['sharpe_ratio']} & Risk-Adjusted**")
         st.dataframe(
             pd.DataFrame([
                 {"Metric": t["sharpe_ratio"], "Value": f"{metrics['sharpe_ratio']:.2f}"},
@@ -859,7 +838,7 @@ with tab3:
         )
 
     with c3:
-        st.markdown(f"#### 🔬 **{t['dsr']} & Tail Risk**")
+        st.markdown(f"#### **{t['dsr']} & Tail Risk**")
         st.dataframe(
             pd.DataFrame([
                 {"Metric": t["dsr"], "Value": f"{metrics.get('deflated_sharpe_ratio', 0.0):.1%}"},
@@ -873,24 +852,21 @@ with tab3:
             use_container_width=True,
         )
 
-    # Beginner Quick Guide Box
     st.markdown("---")
     st.markdown(
         f"""
-        <div style="background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 16px 20px;">
-            <div style="font-weight:700; color:#38bdf8; font-size:0.95rem; margin-bottom:8px;">{t['guide_title']}</div>
-            <div style="font-size:0.83rem; color:#cbd5e1; line-height:1.6;">{t['guide_body']}</div>
+        <div style="background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 16px 20px;">
+            <div style="font-weight:700; color:#38bdf8; font-size:0.92rem; margin-bottom:8px;">{t['guide_title']}</div>
+            <div style="font-size:0.82rem; color:#cbd5e1; line-height:1.6;">{t['guide_body']}</div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
 
-# -----------------------------------------------------------------------------
-# TAB 4: MONTE CARLO ROBUSTNESS ENGINE
-# -----------------------------------------------------------------------------
+# TAB 4: MONTE CARLO
 with tab4:
-    st.markdown(f"### 🎲 {t['tab_monte_carlo']}")
+    st.markdown(f"### **{t['tab_monte_carlo']}**")
     
     mc_summary = run_monte_carlo_simulation(result, iterations=1000, seed=42)
 
@@ -922,11 +898,9 @@ with tab4:
         st.plotly_chart(fig_mc, use_container_width=True)
 
 
-# -----------------------------------------------------------------------------
-# TAB 5: TRADE AUDIT LOG
-# -----------------------------------------------------------------------------
+# TAB 5: TRADES
 with tab5:
-    st.markdown(f"### 📋 {t['tab_trades']}")
+    st.markdown(f"### **{t['tab_trades']}**")
     if result.trades:
         trades_data = [
             {
@@ -973,43 +947,41 @@ with tab5:
         st.info("No trades executed on this timeframe.")
 
 
-# -----------------------------------------------------------------------------
-# TAB 6: TEAR SHEET EXPORT
-# -----------------------------------------------------------------------------
+# TAB 6: TEAR SHEET
 with tab6:
-    st.markdown(f"### 📄 {t['tab_tearsheet']}")
+    st.markdown(f"### **{t['tab_tearsheet']}**")
     tearsheet_html = f"""
-    <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color:#f8fafc; padding:28px; border-radius:14px; font-family:'Plus Jakarta Sans', sans-serif; border:1px solid #334155; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+    <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color:#f8fafc; padding:28px; border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; border:1px solid #334155; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <div>
-                <h2 style="color:#38bdf8; margin:0; font-size:1.5rem; letter-spacing:-0.02em;">PROJECT QUANT — INSTITUTIONAL FACTSHEET</h2>
-                <p style="color:#94a3b8; font-size:0.85rem; margin-top:4px;"><strong>Asset:</strong> {asset_label} | <strong>Strategy:</strong> {selected_strat_name} | <strong>Period:</strong> {bars[0].date} to {bars[-1].date}</p>
+                <h2 style="color:#38bdf8; margin:0; font-size:1.45rem; letter-spacing:-0.02em;">PROJECT QUANT — STRATEGY FACTSHEET</h2>
+                <p style="color:#94a3b8; font-size:0.84rem; margin-top:4px;"><strong>Asset:</strong> {asset_label} | <strong>Strategy:</strong> {selected_strat_name} | <strong>Period:</strong> {bars[0].date} to {bars[-1].date}</p>
             </div>
-            <span style="background:rgba(56, 189, 248, 0.15); color:#38bdf8; padding:6px 14px; border-radius:999px; font-weight:700; font-size:0.75rem; border:1px solid rgba(56, 189, 248, 0.3);">CONFIDENTIAL / INSTITUTIONAL</span>
+            <span style="background:rgba(56, 189, 248, 0.12); color:#38bdf8; padding:5px 12px; border-radius:6px; font-weight:700; font-size:0.72rem; border:1px solid rgba(56, 189, 248, 0.25); text-transform:uppercase;">CONFIDENTIAL / INSTITUTIONAL</span>
         </div>
-        <hr style="border-color:#334155; margin:18px 0;">
-        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; margin-bottom:20px;">
-            <div style="background:rgba(15, 23, 42, 0.8); padding:14px 18px; border-radius:10px; border:1px solid rgba(255,255,255,0.05);">
+        <hr style="border-color:#334155; margin:16px 0;">
+        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-bottom:18px;">
+            <div style="background:rgba(15, 23, 42, 0.8); padding:12px 16px; border-radius:8px; border:1px solid rgba(255,255,255,0.05);">
                 <div style="font-size:11px; font-weight:700; color:#94a3b8; text-transform:uppercase;">TOTAL NET RETURN</div>
                 <div style="font-size:22px; font-weight:800; color:#10b981; margin-top:4px;">{metrics['total_return_pct']:+.2f}%</div>
             </div>
-            <div style="background:rgba(15, 23, 42, 0.8); padding:14px 18px; border-radius:10px; border:1px solid rgba(255,255,255,0.05);">
+            <div style="background:rgba(15, 23, 42, 0.8); padding:12px 16px; border-radius:8px; border:1px solid rgba(255,255,255,0.05);">
                 <div style="font-size:11px; font-weight:700; color:#94a3b8; text-transform:uppercase;">ANNUALIZED SHARPE</div>
                 <div style="font-size:22px; font-weight:800; color:#38bdf8; margin-top:4px;">{metrics['sharpe_ratio']:.2f}</div>
             </div>
-            <div style="background:rgba(15, 23, 42, 0.8); padding:14px 18px; border-radius:10px; border:1px solid rgba(255,255,255,0.05);">
+            <div style="background:rgba(15, 23, 42, 0.8); padding:12px 16px; border-radius:8px; border:1px solid rgba(255,255,255,0.05);">
                 <div style="font-size:11px; font-weight:700; color:#94a3b8; text-transform:uppercase;">DEFLATED SHARPE (DSR)</div>
                 <div style="font-size:22px; font-weight:800; color:#f59e0b; margin-top:4px;">{metrics.get('deflated_sharpe_ratio', 0.0):.1%}</div>
             </div>
-            <div style="background:rgba(15, 23, 42, 0.8); padding:14px 18px; border-radius:10px; border:1px solid rgba(255,255,255,0.05);">
+            <div style="background:rgba(15, 23, 42, 0.8); padding:12px 16px; border-radius:8px; border:1px solid rgba(255,255,255,0.05);">
                 <div style="font-size:11px; font-weight:700; color:#94a3b8; text-transform:uppercase;">MAX DRAWDOWN</div>
                 <div style="font-size:22px; font-weight:800; color:#f43f5e; margin-top:4px;">-{metrics['max_drawdown_pct']:.2f}%</div>
             </div>
-            <div style="background:rgba(15, 23, 42, 0.8); padding:14px 18px; border-radius:10px; border:1px solid rgba(255,255,255,0.05);">
+            <div style="background:rgba(15, 23, 42, 0.8); padding:12px 16px; border-radius:8px; border:1px solid rgba(255,255,255,0.05);">
                 <div style="font-size:11px; font-weight:700; color:#94a3b8; text-transform:uppercase;">PROFIT FACTOR / WIN RATE</div>
                 <div style="font-size:22px; font-weight:800; color:#e2e8f0; margin-top:4px;">{metrics['profit_factor']:.2f} ({metrics['win_rate_pct']:.1f}%)</div>
             </div>
-            <div style="background:rgba(15, 23, 42, 0.8); padding:14px 18px; border-radius:10px; border:1px solid rgba(255,255,255,0.05);">
+            <div style="background:rgba(15, 23, 42, 0.8); padding:12px 16px; border-radius:8px; border:1px solid rgba(255,255,255,0.05);">
                 <div style="font-size:11px; font-weight:700; color:#94a3b8; text-transform:uppercase;">DAILY VALUE AT RISK (95%)</div>
                 <div style="font-size:22px; font-weight:800; color:#e2e8f0; margin-top:4px;">{metrics['var_95_pct']:.2f}%</div>
             </div>
