@@ -43,7 +43,7 @@ from app.domain import (
 FAVICON_URL = "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4c8.svg"
 
 st.set_page_config(
-    page_title="Project Quant | Institutional Terminal",
+    page_title="VERITAS QUANT | Institutional Terminal",
     page_icon="https://img.icons8.com/fluency/96/candlestick-chart.png",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -54,8 +54,8 @@ st.set_page_config(
 # -----------------------------------------------------------------------------
 I18N: Dict[str, Dict[str, str]] = {
     "EN": {
-        "title": "PROJECT QUANT",
-        "subtitle": "Institutional Algorithmic Research & Overfitting Protection Engine",
+        "title": "VERITAS QUANT",
+        "subtitle": "Institutional Algorithmic Research & Alpha Verification Engine",
         "badge_institutional": "INSTITUTIONAL GRADE",
         "badge_dsr": "DSR OVERFITTING GUARD",
         "lang_select": "Language / ภาษา",
@@ -122,8 +122,8 @@ I18N: Dict[str, Dict[str, str]] = {
         "guide_body": "• <strong>Deflated Sharpe Ratio (DSR)</strong>: Standard Sharpe ratios deceive investors when testing multiple strategy parameters. DSR adjusts for selection bias and non-normal asset return skewness.<br>• <strong>Realistic Slippage Model</strong>: Execution pricing accounts for order book impact and bid-ask spread friction in basis points.",
     },
     "TH": {
-        "title": "PROJECT QUANT",
-        "subtitle": "ระบบวิจัยการลงทุนเชิงปริมาณ & ตรวจจับการ Overfitting ระดับสถาบัน",
+        "title": "VERITAS QUANT",
+        "subtitle": "ระบบวิจัยการลงทุนเชิงปริมาณ & ตรวจสอบความถูกต้องของ Alpha ระดับสถาบัน",
         "badge_institutional": "สถาปัตยกรรมระดับสถาบัน",
         "badge_dsr": "ระบบป้องกัน OVERFITTING (DSR)",
         "lang_select": "เลือกภาษา / Language",
@@ -423,11 +423,8 @@ lang = st.sidebar.radio("Language / ภาษา", ["ไทย (TH)", "English (
 lang_key = "TH" if "ไทย" in lang else "EN"
 t = I18N[lang_key]
 
-st.sidebar.markdown(f"### **{t['title']}**")
-st.sidebar.markdown(
-    f"<span class='badge badge-success'>{t['badge_institutional']}</span> <span class='badge'>{t['badge_dsr']}</span>",
-    unsafe_allow_html=True,
-)
+st.sidebar.markdown(f"## **{t['title']}**")
+st.sidebar.caption(t["subtitle"])
 st.sidebar.markdown("---")
 
 # Presets
@@ -954,7 +951,7 @@ with tab6:
     <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color:#f8fafc; padding:28px; border-radius:12px; font-family:'Plus Jakarta Sans', sans-serif; border:1px solid #334155; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <div>
-                <h2 style="color:#38bdf8; margin:0; font-size:1.45rem; letter-spacing:-0.02em;">PROJECT QUANT — STRATEGY FACTSHEET</h2>
+                <h2 style="color:#38bdf8; margin:0; font-size:1.45rem; letter-spacing:-0.02em;">VERITAS QUANT — STRATEGY FACTSHEET</h2>
                 <p style="color:#94a3b8; font-size:0.84rem; margin-top:4px;"><strong>Asset:</strong> {asset_label} | <strong>Strategy:</strong> {selected_strat_name} | <strong>Period:</strong> {bars[0].date} to {bars[-1].date}</p>
             </div>
             <span style="background:rgba(56, 189, 248, 0.12); color:#38bdf8; padding:5px 12px; border-radius:6px; font-weight:700; font-size:0.72rem; border:1px solid rgba(56, 189, 248, 0.25); text-transform:uppercase;">CONFIDENTIAL / INSTITUTIONAL</span>
