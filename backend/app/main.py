@@ -18,6 +18,19 @@ app = FastAPI(
 app.include_router(backtests.router)
 
 
+@app.get("/", tags=["root"])
+def root():
+    return {
+        "message": "Welcome to Project Quant — Institutional Backtest Engine API",
+        "docs_url": "/docs",
+        "redoc_url": "/redoc",
+        "health_check": "/health",
+        "strategies_url": "/backtests/strategies",
+        "version": "0.2.0",
+    }
+
+
 @app.get("/health", tags=["health"])
 def health_check():
     return {"status": "ok"}
+
